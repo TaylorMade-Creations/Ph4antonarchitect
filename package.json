@@ -1,0 +1,11 @@
+{
+  "name": "ph4antonarchitect",
+  "private": true,
+  "packageManager": "pnpm@11.16.0",
+  "scripts": {
+    "build": "pnpm --dir shopify-product-intelligence-app build",
+    "dev": "pnpm --dir shopify-product-intelligence-app dev",
+    "start": "pnpm --dir shopify-product-intelligence-app start",
+    "test": "pnpm --dir shopify-product-intelligence-app test"
+  }
+}

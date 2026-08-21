@@ -1,0 +1,4 @@
+packages:
+  - shopify-product-intelligence-app
+allowBuilds:
+  unrs-resolver: true

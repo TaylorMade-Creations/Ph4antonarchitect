@@ -68,7 +68,7 @@ export async function GET() {
       clerk,
       shopifyInstallationReady: installationRows.length > 0,
       activeShopifyInstallations: installationRows.length,
-      installedShops: installationRows.map((row) => ({
+      installedShops: installationRows.map((row: any) => ({
         shopDomain: row.shop_domain,
         displayName: row.display_name,
       })),

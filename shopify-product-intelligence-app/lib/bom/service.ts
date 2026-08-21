@@ -43,7 +43,7 @@ export async function verifyBom(shopifyVariantId: string) {
     component.name FROM bom_revision_items item JOIN components component ON component.id=item.component_id
     WHERE item.bom_revision_id=${rows[0].id}`;
   const requiredRoles = ["FRAGRANCE", "BOTTLE", "ATOMIZER", "CAP_COLLAR", "LABEL", "BOX", "SEAL", "PACKAGING"];
-  const present = new Set(items.map((item) => item.role));
+  const present = new Set(items.map((item: any) => item.role));
   const missing = requiredRoles.filter((role) => !present.has(role));
   if (rows[0].fill_ml !== "30" && Number(rows[0].fill_ml) !== 30) missing.push("FILL_30ML_REQUIRED");
   if (missing.length > 0) throw new Error(`BOM verification failed: missing ${missing.join(", ")}`);
@@ -57,5 +57,5 @@ export async function getBom(shopifyVariantId: string) {
   const items = revisions.length === 0 ? [] : await sql`SELECT item.*, component.component_key, component.name,
     component.component_type, component.unit_of_measure FROM bom_revision_items item JOIN components component
     ON component.id=item.component_id WHERE item.bom_revision_id=${revisions[0].id} ORDER BY item.role, item.id`;
-  return { shopifyVariantId, activeRevision: revisions.find((revision) => revision.active) ?? null, revisions, items };
+  return { shopifyVariantId, activeRevision: revisions.find((revision: any) => revision.active) ?? null, revisions, items };
 }
