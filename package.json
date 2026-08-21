@@ -3,9 +3,9 @@
   "private": true,
   "packageManager": "pnpm@11.16.0",
   "scripts": {
-    "build": "pnpm --dir shopify-product-intelligence-app build",
-    "dev": "pnpm --dir shopify-product-intelligence-app dev",
-    "start": "pnpm --dir shopify-product-intelligence-app start",
-    "test": "pnpm --dir shopify-product-intelligence-app test"
+    "build": "npm --prefix shopify-product-intelligence-app run build",
+    "dev": "npm --prefix shopify-product-intelligence-app run dev",
+    "start": "npm --prefix shopify-product-intelligence-app run start",
+    "test": "npm --prefix shopify-product-intelligence-app run test"
   }
 }
