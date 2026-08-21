@@ -1,77 +1,4 @@
-const products = [
-  {
-    id: "amethyst-lavender",
-    name: "Amethyst & Lavender",
-    category: "Candle",
-    size: "8 oz jar",
-    price: 28,
-    note: "Lavender, violet petals, and soft amber in a calming nightpour.",
-    ribbon: "Best seller",
-    aura: "rgba(171, 123, 255, 0.36)",
-    glow: "rgba(171, 123, 255, 0.16)",
-    accent: "#c9a7ff",
-  },
-  {
-    id: "moss-agate-sage",
-    name: "Moss Agate & Sage",
-    category: "Candle",
-    size: "8 oz jar",
-    price: 28,
-    note: "Herbal sage, cedar leaf, and green mineral depth for steady spaces.",
-    ribbon: "New",
-    aura: "rgba(127, 196, 121, 0.36)",
-    glow: "rgba(127, 196, 121, 0.16)",
-    accent: "#9de39c",
-  },
-  {
-    id: "sunstone-ember",
-    name: "Sunstone Ember",
-    category: "Candle",
-    size: "8 oz jar",
-    price: 28,
-    note: "Golden spice, smoked vanilla, and resin warmth with a bright finish.",
-    ribbon: "Limited",
-    aura: "rgba(255, 153, 56, 0.4)",
-    glow: "rgba(255, 153, 56, 0.18)",
-    accent: "#ffbd72",
-  },
-  {
-    id: "moonstone-melts",
-    name: "Moonstone Melt Trio",
-    category: "Wax melt",
-    size: "6 cubes",
-    price: 18,
-    note: "Soft vanilla, jasmine, and a clean wax melt profile for quick room glow.",
-    ribbon: "Fresh",
-    aura: "rgba(233, 233, 255, 0.24)",
-    glow: "rgba(233, 233, 255, 0.12)",
-    accent: "#f4f2ff",
-  },
-  {
-    id: "obsidian-rollon",
-    name: "Obsidian Amber Roll-On",
-    category: "Roll-on",
-    size: "10 mL",
-    price: 20,
-    note: "Amber musk, palo santo, and a polished travel-sized pulse scent.",
-    ribbon: "Travel",
-    aura: "rgba(98, 74, 47, 0.42)",
-    glow: "rgba(98, 74, 47, 0.18)",
-    accent: "#d9b27c",
-  },
-  {
-    id: "lunar-room-mist",
-    name: "Lunar Veil Room Mist",
-    category: "Mist",
-    size: "4 oz spray",
-    price: 24,
-    note: "Citrus peel, clean linen, and a soft moonlit dry-down for the room.",
-    ribbon: "Everyday",
-    aura: "rgba(98, 158, 255, 0.34)",
-    glow: "rgba(98, 158, 255, 0.16)",
-    accent: "#b8d7ff",
-  },
-];
+import { products, productCategories } from "./catalog-data.mjs";
 
 const esc = (value) =>
   String(value)
@@ -91,6 +18,11 @@ const productCards = products
         style="--aura:${product.aura}; --glow:${product.glow}; --accent:${product.accent};"
       >
         <div class="product-art">
+          ${
+            product.image
+              ? `<div class="product-art__photo" style="background-image:url('${esc(product.image)}');"></div>`
+              : ""
+          }
           <span class="product-ribbon">${esc(product.ribbon)}</span>
           <div class="product-art__orb"></div>
           <div class="product-art__halo"></div>
@@ -106,9 +38,10 @@ const productCards = products
           </div>
           <h3>${esc(product.name)}</h3>
           <p>${esc(product.note)}</p>
+          <div class="product-variants">${esc(product.variantSummary)}</div>
           <div class="product-footer">
-            <strong>$${product.price.toFixed(2)}</strong>
-            <span>Gift-ready</span>
+            <strong>${esc(product.priceLabel)}</strong>
+            <span>${product.variantCount} styles</span>
           </div>
           <div class="product-actions">
             <button class="button button-secondary" type="button" data-preview-product="${esc(product.id)}">Preview</button>
@@ -130,7 +63,7 @@ const html = `<!doctype html>
     <title>Taylor Made Fragrance | Stone Wick Storefront</title>
     <meta
       name="description"
-      content="A luxury Stone Wick storefront preview with products, cart drawer, and checkout flow for Taylor Made Fragrance."
+      content="A luxury Stone Wick storefront preview with 71 products, cart drawer, and checkout flow for Taylor Made Fragrance."
     />
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&display=swap');
@@ -648,11 +581,49 @@ const html = `<!doctype html>
         padding: 22px;
       }
 
+      .collection-tools {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .collection-search {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .search-field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .search-field input {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 194, 99, 0.18);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        font: inherit;
+      }
+
+      .search-field input::placeholder {
+        color: rgba(248, 235, 210, 0.4);
+      }
+
+      .result-count {
+        color: var(--muted-2);
+        font-size: 0.84rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
       .filters {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
-        margin-bottom: 18px;
       }
 
       .filter-chip {
@@ -693,6 +664,17 @@ const html = `<!doctype html>
         background:
           radial-gradient(circle at 50% 20%, rgba(255, 230, 160, 0.16), transparent 18%),
           linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+      }
+
+      .product-art__photo {
+        position: absolute;
+        inset: 18px 18px 38px;
+        border-radius: 20px;
+        background-position: center bottom;
+        background-repeat: no-repeat;
+        background-size: contain;
+        filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.32));
+        opacity: 0.96;
       }
 
       .product-art::before {
@@ -855,6 +837,12 @@ const html = `<!doctype html>
         margin: 0;
         color: var(--muted);
         line-height: 1.7;
+      }
+
+      .product-variants {
+        color: #f0d6a2;
+        font-size: 0.82rem;
+        line-height: 1.6;
       }
 
       .product-footer {
@@ -1457,9 +1445,9 @@ const html = `<!doctype html>
               <p class="eyebrow">Live storefront preview</p>
               <h1>Stone Wick scents, styled like a luxury Shopify home.</h1>
               <p class="lead">
-                This storefront now behaves like a real shop: browse the collection, preview a
-                product, add items to the cart, apply a discount code, and move through a checkout
-                preview without leaving the page.
+                This storefront now behaves like a real shop: browse the full 71-product catalog,
+                preview a product, add items to the cart, apply a discount code, and move through
+                a checkout preview without leaving the page.
               </p>
               <div class="hero-actions">
                 <a class="button button-primary" href="#shop">Shop the collection</a>
@@ -1468,20 +1456,20 @@ const html = `<!doctype html>
               </div>
               <div class="metrics" aria-label="Store stats">
                 <div class="metric">
-                  <strong>6 products</strong>
-                  <span>Ready to shop</span>
+                  <strong>71 products</strong>
+                  <span>Imported from CSV</span>
                 </div>
                 <div class="metric">
                   <strong>Drawer cart</strong>
                   <span>Theme matched</span>
                 </div>
                 <div class="metric">
-                  <strong>10% code</strong>
-                  <span>STONE10 preview</span>
+                  <strong>5 forms</strong>
+                  <span>Bottle, roll-on, body care, spray, single item</span>
                 </div>
                 <div class="metric">
-                  <strong>Test receipt</strong>
-                  <span>Order flow included</span>
+                  <strong>Checkout</strong>
+                  <span>Search + receipt included</span>
                 </div>
               </div>
             </div>
@@ -1528,20 +1516,32 @@ const html = `<!doctype html>
             <div class="section-head">
               <div>
                 <p class="eyebrow">Shop the collection</p>
-                <h2>Browse the Stone Wick lineup and keep the flow on one page.</h2>
+                <h2>Browse the full Stone Wick lineup and keep the flow on one page.</h2>
               </div>
               <p>
                 The collection filter mirrors a real storefront pattern, while each product card
-                keeps its own add-to-cart and preview controls.
+                keeps its own add-to-cart and preview controls. Search works across names, notes,
+                and variant summaries.
               </p>
             </div>
 
-            <div class="filters" role="tablist" aria-label="Collection filters">
-              <button class="filter-chip is-active" type="button" data-filter="All">All</button>
-              <button class="filter-chip" type="button" data-filter="Candle">Candles</button>
-              <button class="filter-chip" type="button" data-filter="Wax melt">Wax melts</button>
-              <button class="filter-chip" type="button" data-filter="Roll-on">Roll-ons</button>
-              <button class="filter-chip" type="button" data-filter="Mist">Room mist</button>
+            <div class="collection-tools">
+              <div class="collection-search">
+                <label class="search-field" for="product-search">
+                  <span class="result-count" data-result-count>71 products</span>
+                  <input id="product-search" data-search type="search" placeholder="Search the collection" />
+                </label>
+                <span class="result-count" data-visible-count>71 visible</span>
+              </div>
+
+              <div class="filters" role="tablist" aria-label="Collection filters">
+                <button class="filter-chip is-active" type="button" data-filter="All">All</button>
+                <button class="filter-chip" type="button" data-filter="Bottle">Bottles</button>
+                <button class="filter-chip" type="button" data-filter="Roll-on">Roll-ons</button>
+                <button class="filter-chip" type="button" data-filter="Body care">Body care</button>
+                <button class="filter-chip" type="button" data-filter="Spray">Sprays</button>
+                <button class="filter-chip" type="button" data-filter="Single item">Singles</button>
+              </div>
             </div>
 
             <div class="product-grid">
@@ -1804,6 +1804,9 @@ const html = `<!doctype html>
         const viewButtons = Array.from(document.querySelectorAll('[data-view]'));
         const panels = Array.from(document.querySelectorAll('[data-panel]'));
         const filterButtons = Array.from(document.querySelectorAll('[data-filter]'));
+        const searchInput = document.querySelector('[data-search]');
+        const resultCountNode = document.querySelector('[data-result-count]');
+        const visibleCountNode = document.querySelector('[data-visible-count]');
         const previewButtons = Array.from(document.querySelectorAll('[data-preview-product]'));
         const addButtons = Array.from(document.querySelectorAll('[data-add-to-cart]'));
         const openCartButtons = Array.from(document.querySelectorAll('[data-open-cart]'));
@@ -1828,6 +1831,7 @@ const html = `<!doctype html>
         let appliedCode = '';
         let lastReceipt = '';
         let hasReceipt = false;
+        let searchTerm = '';
 
         const money = new Intl.NumberFormat('en-US', {
           style: 'currency',
@@ -1836,6 +1840,31 @@ const html = `<!doctype html>
 
         function productById(id) {
           return catalog.find((item) => item.id === id);
+        }
+
+        function updateCollectionVisibility() {
+          const query = searchTerm.trim().toLowerCase();
+          let visibleCount = 0;
+          productCards.forEach((card) => {
+            const product = productById(card.dataset.productId);
+            if (!product) return;
+            const matchesCategory = activeFilter === 'All' || card.dataset.category === activeFilter;
+            const haystack = [
+              product.name,
+              product.note,
+              product.variantSummary,
+              product.category,
+              ...(product.variants || []),
+            ]
+              .join(' ')
+              .toLowerCase();
+            const matchesSearch = !query || haystack.includes(query);
+            const visible = matchesCategory && matchesSearch;
+            card.hidden = !visible;
+            if (visible) visibleCount += 1;
+          });
+          if (resultCountNode) resultCountNode.textContent = catalog.length + ' products';
+          if (visibleCountNode) visibleCountNode.textContent = visibleCount + ' visible';
         }
 
         function setView(view) {
@@ -1854,10 +1883,12 @@ const html = `<!doctype html>
           filterButtons.forEach((button) => {
             button.classList.toggle('is-active', button.dataset.filter === filter);
           });
-          productCards.forEach((card) => {
-            const matches = filter === 'All' || card.dataset.category === filter;
-            card.hidden = !matches;
-          });
+          updateCollectionVisibility();
+        }
+
+        function setSearch(term) {
+          searchTerm = term;
+          updateCollectionVisibility();
         }
 
         function subtotal() {
@@ -1892,7 +1923,7 @@ const html = `<!doctype html>
           spotlightName.textContent = product.name;
           spotlightCopy.textContent = product.note;
           spotlightRibbon.textContent = product.ribbon;
-          spotlightPrice.textContent = money.format(product.price);
+          spotlightPrice.textContent = product.priceLabel || money.format(product.price);
           spotlightTitle.textContent = product.name;
           spotlightSize.textContent = product.size;
           document.querySelectorAll('[data-preview-product]').forEach((button) => {
@@ -2006,6 +2037,10 @@ const html = `<!doctype html>
           button.addEventListener('click', () => setFilter(button.dataset.filter));
         });
 
+        if (searchInput) {
+          searchInput.addEventListener('input', () => setSearch(searchInput.value || ''));
+        }
+
         previewButtons.forEach((button) => {
           button.addEventListener('click', () => {
             const product = productById(button.dataset.previewProduct);
@@ -2089,6 +2124,7 @@ const html = `<!doctype html>
         renderSpotlight(spotlight);
         setFilter('All');
         renderCart();
+        updateCollectionVisibility();
         setView('cart');
       })();
     </script>
