@@ -94,7 +94,7 @@ const html = `<!doctype html>
         <p class="eyebrow">Taylor Made Candle & Wax Co.</p>
         <h1>Hand-poured warmth, now live on your custom domain.</h1>
         <p class="lead">
-          The site has been published and is ready for the `www.stone-wick.com`
+          The site has been published and is ready for the www.stone-wick.com
           DNS connection. This page is a lightweight storefront placeholder
           while the broader Taylor Made app continues to evolve.
         </p>
