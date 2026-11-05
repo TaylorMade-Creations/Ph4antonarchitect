@@ -1,3 +1,5 @@
+import CatalogCsvImport from "@/app/components/catalog-csv-import";
+
 const requiredEnv = [
   "SHOPIFY_SHOP",
   "SHOPIFY_CLIENT_ID",
@@ -77,6 +79,8 @@ export default function Home() {
             persistent Postgres storage are wired for this project.
           </p>
         </header>
+
+        <CatalogCsvImport />
 
         <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="rounded-lg border border-[#d8d2c4] bg-white p-5 shadow-sm">

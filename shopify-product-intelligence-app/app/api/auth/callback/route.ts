@@ -13,6 +13,8 @@ import {
   verifyShopifyHmac,
 } from "@/lib/shopify/oauth";
 
+export const dynamic = "force-dynamic";
+
 type ShopifyShopIdentity = {
   shop: {
     id: string;

@@ -47,6 +47,7 @@ test("Shopify OAuth routes perform secure install and callback handling", async 
   assert.match(callbackRoute, /shopify_installations/);
   assert.match(callbackRoute, /access_token_encrypted/);
   assert.match(callbackRoute, /SHOPIFY_OAUTH_INSTALL/);
+  assert.match(callbackRoute, /dynamic = ["']force-dynamic["']/);
 });
 
 test("Shopify-named routes expose install, callback, and read-only store test", async () => {
